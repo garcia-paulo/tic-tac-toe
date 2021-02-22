@@ -7,6 +7,9 @@ function App() {
   const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
   const [player, setPlayer] = useState("X")
   const [result, setResult] = useState({ winner: "", state: "" })
+  const [placarX, setPlacarX] = useState(0);
+  const [placarO, setPlacarO] = useState(0);
+  const winsO = 0;
 
   useEffect(() => {
     checkWin();
@@ -18,14 +21,17 @@ function App() {
       switch (result.winner) {
         case "X":
           alert("Game finished! Winning Player: O");
+          setPlacarO(placarO + 1);
           break;
         case "O":
           alert("Game finished! Winning Player: X");
+          setPlacarX(placarX + 1);
           break;
         case "":
           alert("Game finished! It's a tie!");
           break;
       }
+      restart();
     }
   }, [result])
 
@@ -73,27 +79,41 @@ function App() {
     }))
   }
 
+  const restart = () => {
+    setBoard(["", "", "", "", "", "", "", "", ""]);
+    setPlayer("X");
+  }
+
   return (
-    <div className="menu">
-      
-    </div>,
-    <div className="App">
-      <div className="board">
-        <div className="row">
-          <Square.s0 val={board[0]} chooseSquare={() => { chooseSquare(0) }} />
-          <Square.s1 val={board[1]} chooseSquare={() => { chooseSquare(1) }} />
-          <Square.s2 val={board[2]} chooseSquare={() => { chooseSquare(2) }} />
+    <div className="Centro">
+      <div>
+        X <p />
+        {placarX}
+      </div>
+      <div className="App">
+        Vez de: {player} <p />
+        <div className="board">
+          <div className="row">
+            <Square.s0 val={board[0]} chooseSquare={() => { chooseSquare(0) }} />
+            <Square.s1 val={board[1]} chooseSquare={() => { chooseSquare(1) }} />
+            <Square.s2 val={board[2]} chooseSquare={() => { chooseSquare(2) }} />
+          </div>
+          <div className="row">
+            <Square.s3 val={board[3]} chooseSquare={() => { chooseSquare(3) }} />
+            <Square.s4 val={board[4]} chooseSquare={() => { chooseSquare(4) }} />
+            <Square.s5 val={board[5]} chooseSquare={() => { chooseSquare(5) }} />
+          </div>
+          <div className="row">
+            <Square.s6 val={board[6]} chooseSquare={() => { chooseSquare(6) }} />
+            <Square.s7 val={board[7]} chooseSquare={() => { chooseSquare(7) }} />
+            <Square.s8 val={board[8]} chooseSquare={() => { chooseSquare(8) }} />
+          </div>
         </div>
-        <div className="row">
-          <Square.s3 val={board[3]} chooseSquare={() => { chooseSquare(3) }} />
-          <Square.s4 val={board[4]} chooseSquare={() => { chooseSquare(4) }} />
-          <Square.s5 val={board[5]} chooseSquare={() => { chooseSquare(5) }} />
-        </div>
-        <div className="row">
-          <Square.s6 val={board[6]} chooseSquare={() => { chooseSquare(6) }} />
-          <Square.s7 val={board[7]} chooseSquare={() => { chooseSquare(7) }} />
-          <Square.s8 val={board[8]} chooseSquare={() => { chooseSquare(8) }} />
-        </div>
+        <button onClick={restart}>REINICIAR</button>
+      </div>
+      <div>
+        O <p />
+        {placarO}
       </div>
     </div>
   );
