@@ -16,14 +16,14 @@ function App() {
     checkWin();
     checkTie();
 
-    if (player == "O") {
+    if (player === "O") {
       turno = 1;
       setPlayer(player);
     }
   }, [board])
 
   useEffect(() => {
-    if (result.state != "") {
+    if (result.state !== "") {
       switch (result.winner) {
         case "X":
           alert("Game finished! Winning Player: O");
@@ -45,10 +45,10 @@ function App() {
   const checkWin = () => {
     Patterns.forEach((current) => {
       const firstPlayer = board[current[0]];
-      if (firstPlayer == "") return;
+      if (firstPlayer === "") return;
       let foundWinningPattern = true
       current.forEach((idx) => {
-        if (board[idx] != firstPlayer) {
+        if (board[idx] !== firstPlayer) {
           foundWinningPattern = false
         }
       })
@@ -62,7 +62,7 @@ function App() {
   const checkTie = () => {
     let filled = true;
     board.forEach((square) => {
-      if (square == "") {
+      if (square === "") {
         filled = false;
       }
     })
@@ -74,8 +74,8 @@ function App() {
 
   const chooseSquare = (square) => {
     setBoard(board.map((val, idx) => {
-      if (idx == square && val == "") {
-        if (player == "X") {
+      if (idx === square && val === "") {
+        if (player === "X") {
           setPlayer("O");
         } else {
           setPlayer("X")
@@ -94,7 +94,7 @@ function App() {
   const [botaoAI, setBotaoAI] = useState("O: Jogador")
 
   const liga = () => {
-    if (aiLigada == 0) {
+    if (aiLigada === 0) {
       setBotaoAI("O: CPU");
       aiLigada = 1;
     } else {
@@ -111,43 +111,43 @@ function App() {
     let oFound = 0;
     Patterns.forEach((current) => {
       current.forEach((idx) => {
-        if (idx == position) {
+        if (idx === position) {
           current.forEach((idx) => {
-            if (board[idx] == "X") {
+            if (board[idx] === "X") {
               xFound++;
             }
-            if (board[idx] == "O") {
+            if (board[idx] === "O") {
               oFound++;
             }
           })
-          if (oFound == 1) {
+          if (oFound === 1) {
             score = 2;
           }
 
-          if (xFound == 1) {
+          if (xFound === 1) {
             score = 0.5;
           }
 
-          if (xFound == 2) {
+          if (xFound === 2) {
             score = 5;
           }
 
-          if (oFound == 2) {
+          if (oFound === 2) {
             score = 10;
           }
 
-          if (position == 0 ||
-            position == 2 ||
-            position == 6 ||
-            position == 8) {
+          if (position === 0 ||
+            position === 2 ||
+            position === 6 ||
+            position === 8) {
             score = score + 0.5;
           }
 
-          if (position == 4) {
+          if (position === 4) {
             score = score + 1;
           }
 
-          if (position == 9) {
+          if (position === 9) {
             score = 0.3;
           }
 
@@ -163,19 +163,13 @@ function App() {
     return bestScore;
   }
 
-  /*
-    const ai = (position) => {
-      return 1;
-    }
-  */
-
-  if (player == "O" && aiLigada == 1 && turno == 1 && result.state == "") {
+  if (player === "O" && aiLigada === 1 && turno === 1 && result.state === "") {
     turno = 0;
     let score;
     let bestScore = 0;
     let bestMove;
     board.map((val, idx) => {
-      if (val == "") {
+      if (val === "") {
         let score = ai(idx);
         if (score > bestScore) {
           bestScore = score;
@@ -185,7 +179,7 @@ function App() {
     })
 
     setBoard(board.map((val, idx) => {
-      if (idx == bestMove) {
+      if (idx === bestMove) {
         setPlayer("X");
         bestScore = 0;
         return player
