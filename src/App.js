@@ -125,7 +125,7 @@ function App() {
           }
 
           if (xFound == 1) {
-            score = 1;
+            score = 0.5;
           }
 
           if (xFound == 2) {
@@ -136,12 +136,19 @@ function App() {
             score = 10;
           }
 
-          if (position == 4) {
-            score = score + 3;
+          if (position == 0 ||
+            position == 2 ||
+            position == 6 ||
+            position == 8) {
+            score = score + 0.5;
           }
 
-          if(position == 9){
-            score = 0.5;
+          if (position == 4) {
+            score = score + 1;
+          }
+
+          if (position == 9) {
+            score = 0.3;
           }
 
           if (score > bestScore) {
@@ -168,13 +175,13 @@ function App() {
     let bestScore = 0;
     let bestMove;
     board.map((val, idx) => {
-        if (val == "") {
-          let score = ai(idx);
-          if (score > bestScore) {
-            bestScore = score;
-            bestMove = idx;
-          }
+      if (val == "") {
+        let score = ai(idx);
+        if (score > bestScore) {
+          bestScore = score;
+          bestMove = idx;
         }
+      }
     })
 
     setBoard(board.map((val, idx) => {
