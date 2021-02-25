@@ -2,18 +2,24 @@ import './App.css';
 import { useState, useEffect } from "react";
 import * as Square from "./Components/Square"
 import { Patterns } from "./Patterns"
+var aiLigada = 0;
+var turno = 0;
 
 function App() {
-  const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
+  const [board, setBoard] = useState(["", "", "", "", "", "", "", "", "", ""]);
   const [player, setPlayer] = useState("X")
   const [result, setResult] = useState({ winner: "", state: "" })
   const [placarX, setPlacarX] = useState(0);
   const [placarO, setPlacarO] = useState(0);
-  const winsO = 0;
 
   useEffect(() => {
     checkWin();
     checkTie();
+
+    if (player == "O") {
+      turno = 1;
+      setPlayer(player);
+    }
   }, [board])
 
   useEffect(() => {
@@ -32,6 +38,7 @@ function App() {
           break;
       }
       restart();
+      setResult({ winner: "", state: "" });
     }
   }, [result])
 
@@ -73,15 +80,111 @@ function App() {
         } else {
           setPlayer("X")
         }
-        return player
+        return player;
       }
       return val;
     }))
   }
 
   const restart = () => {
-    setBoard(["", "", "", "", "", "", "", "", ""]);
+    setBoard(["", "", "", "", "", "", "", "", "", ""]);
     setPlayer("X");
+  }
+
+  const [botaoAI, setBotaoAI] = useState("O: Jogador")
+
+  const liga = () => {
+    if (aiLigada == 0) {
+      setBotaoAI("O: CPU");
+      aiLigada = 1;
+    } else {
+      setBotaoAI("O: Jogador");
+      aiLigada = 0;
+    }
+  }
+
+
+  const ai = (position) => {
+    let score = 1;
+    let bestScore = 0;
+    let xFound = 0;
+    let oFound = 0;
+    Patterns.forEach((current) => {
+      current.forEach((idx) => {
+        if (idx == position) {
+          current.forEach((idx) => {
+            if (board[idx] == "X") {
+              xFound++;
+            }
+            if (board[idx] == "O") {
+              oFound++;
+            }
+          })
+          if (oFound == 1) {
+            score = 2;
+          }
+
+          if (xFound == 1) {
+            score = 1;
+          }
+
+          if (xFound == 2) {
+            score = 5;
+          }
+
+          if (oFound == 2) {
+            score = 10;
+          }
+
+          if (position == 4) {
+            score = score + 3;
+          }
+
+          if(position == 9){
+            score = 0.5;
+          }
+
+          if (score > bestScore) {
+            bestScore = score;
+          }
+
+          xFound = 0;
+          oFound = 0;
+        }
+      })
+    })
+    return bestScore;
+  }
+
+  /*
+    const ai = (position) => {
+      return 1;
+    }
+  */
+
+  if (player == "O" && aiLigada == 1 && turno == 1 && result.state == "") {
+    turno = 0;
+    let score;
+    let bestScore = 0;
+    let bestMove;
+    board.map((val, idx) => {
+        if (val == "") {
+          let score = ai(idx);
+          if (score > bestScore) {
+            bestScore = score;
+            bestMove = idx;
+          }
+        }
+    })
+
+    setBoard(board.map((val, idx) => {
+      if (idx == bestMove) {
+        setPlayer("X");
+        bestScore = 0;
+        return player
+      }
+      return val;
+    }))
   }
 
   return (
@@ -109,7 +212,10 @@ function App() {
             <Square.s8 val={board[8]} chooseSquare={() => { chooseSquare(8) }} />
           </div>
         </div>
-        <button onClick={restart}>REINICIAR</button>
+        <div>
+          <button className="ai" onClick={liga}>{botaoAI}</button>
+          <button onClick={restart}>REINICIAR</button>
+        </div>
       </div>
       <div>
         O <p />
