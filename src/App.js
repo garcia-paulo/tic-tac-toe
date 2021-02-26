@@ -159,7 +159,6 @@ function App() {
           }
 
           if (board[0] === "O" && position === 8){
-            console.log("teste");
             score = score + 1;
           }
 
