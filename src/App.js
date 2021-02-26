@@ -4,10 +4,11 @@ import * as Square from "./Components/Square"
 import { Patterns } from "./Patterns"
 var aiLigada = 0;
 var turno = 0;
+var startingPlayer = "X";
 
 function App() {
   const [board, setBoard] = useState(["", "", "", "", "", "", "", "", "", ""]);
-  const [player, setPlayer] = useState("X")
+  const [player, setPlayer] = useState(startingPlayer)
   const [result, setResult] = useState({ winner: "", state: "" })
   const [placarX, setPlacarX] = useState(0);
   const [placarO, setPlacarO] = useState(0);
@@ -54,21 +55,31 @@ function App() {
       })
 
       if (foundWinningPattern) {
-        setResult({ winner: player, state: "won" })
+        setResult({ winner: player, state: "won" });
+        if (startingPlayer === "X"){
+          startingPlayer = "O";
+        } else {
+          startingPlayer = "X";
+        }
       }
     })
   }
 
   const checkTie = () => {
     let filled = true;
-    board.forEach((square) => {
-      if (square === "") {
+    for(let i = 0; i < 9; i++) {
+      if (board[i] === "") {
         filled = false;
       }
-    })
+    }
 
     if (filled) {
       setResult({ winner: "", state: "tie" })
+      if (startingPlayer === "X"){
+        startingPlayer = "O";
+      } else {
+        startingPlayer = "X";
+      }
     }
   }
 
@@ -88,7 +99,7 @@ function App() {
 
   const restart = () => {
     setBoard(["", "", "", "", "", "", "", "", "", ""]);
-    setPlayer("X");
+    setPlayer(startingPlayer);
   }
 
   const [botaoAI, setBotaoAI] = useState("O: Jogador")
@@ -129,7 +140,7 @@ function App() {
           }
 
           if (xFound === 2) {
-            score = 5;
+            score = 8;
           }
 
           if (oFound === 2) {
@@ -140,10 +151,15 @@ function App() {
             position === 2 ||
             position === 6 ||
             position === 8) {
-            score = score + 0.5;
+            score = score + 1;
           }
 
           if (position === 4) {
+            score = score + 0.5;
+          }
+
+          if (board[0] === "O" && position === 8){
+            console.log("teste");
             score = score + 1;
           }
 
