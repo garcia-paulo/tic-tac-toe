@@ -27,15 +27,15 @@ function App() {
     if (result.state !== "") {
       switch (result.winner) {
         case "X":
-          alert("Game finished! Winning Player: O");
+          alert("O jogo acabou! Vencedor: O");
           setPlacarO(placarO + 1);
           break;
         case "O":
-          alert("Game finished! Winning Player: X");
+          alert("O jogo acabou! Vencedor: X");
           setPlacarX(placarX + 1);
           break;
         case "":
-          alert("Game finished! It's a tie!");
+          alert("O jogo acabou! Empate!");
           break;
       }
       restart();
@@ -56,7 +56,7 @@ function App() {
 
       if (foundWinningPattern) {
         setResult({ winner: player, state: "won" });
-        if (startingPlayer === "X"){
+        if (startingPlayer === "X") {
           startingPlayer = "O";
         } else {
           startingPlayer = "X";
@@ -67,7 +67,7 @@ function App() {
 
   const checkTie = () => {
     let filled = true;
-    for(let i = 0; i < 9; i++) {
+    for (let i = 0; i < 9; i++) {
       if (board[i] === "") {
         filled = false;
       }
@@ -75,7 +75,7 @@ function App() {
 
     if (filled) {
       setResult({ winner: "", state: "tie" })
-      if (startingPlayer === "X"){
+      if (startingPlayer === "X") {
         startingPlayer = "O";
       } else {
         startingPlayer = "X";
@@ -158,7 +158,7 @@ function App() {
             score = score + 0.5;
           }
 
-          if (board[0] === "O" && position === 8){
+          if (board[0] === "O" && position === 8) {
             score = score + 1;
           }
 
